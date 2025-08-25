@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMPES - O Patch Definitivo para PES</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0A; --card: #141414; --border: #2a2a2a; --text-primary: #E5E5E5; --text-secondary: #A3A3A3;
+      --accent-green: #00FF85; --accent-green-rgb: 0, 255, 133;
+      --accent-gold: #FACC15; --accent-gold-rgb: 250, 204, 21;
+    }
+    .light {
+      --bg: #F0F0F0; --card: #FFFFFF; --border: #D1D1D1; --text-primary: #1F1F1F; --text-secondary: #555555;
+      --accent-green: #00A856; --accent-green-rgb: 0, 168, 86;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      background-image: linear-gradient(rgba(var(--bg), 0.95), var(--bg)), url('https://www.transparenttextures.com/patterns/wavy-lines.png');
+      color: var(--text-primary);
+      opacity: 0;
+      transition: opacity 1.5s ease, background-color 0.4s ease;
+    }
+    body.loaded { opacity: 1; }
+
+    h1, h2, h3, .font-russo { font-family: 'Russo One', sans-serif; }
+
+    .hero-main-title { color: var(--accent-green); text-shadow: 0 0 15px rgba(var(--accent-green-rgb), 0.7), 0 0 30px rgba(var(--accent-green-rgb), 0.5); letter-spacing: 2px; }
+    .section-title { color: var(--accent-green); text-shadow: 0 0 10px rgba(var(--accent-green-rgb), 0.6); }
+    .gold-text { color: var(--accent-gold); text-shadow: 0 0 10px rgba(var(--accent-gold-rgb), 0.6); }
+    
+    /* Efeitos de Animação e Brilho */
+    .animate-on-scroll { opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+    .player-glow { filter: drop-shadow(0 0 30px rgba(var(--accent-green-rgb), 0.6)); }
+    .logo-glow { filter: drop-shadow(0 0 15px rgba(var(--accent-green-rgb), 0.7)); }
+    
+    /* Animação dos Jogadores (CSS Puro) */
+    @keyframes slide-in-left {
+        from { opacity: 0; transform: translateX(-100px) scale(0.9) rotate(-5deg); }
+        to { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+    }
+    @keyframes slide-in-right {
+        from { opacity: 0; transform: translateX(100px) scale(0.9) rotate(5deg); }
+        to { opacity: 1; transform: translateX(0) scale(1) rotate(0deg); }
+    }
+    .player-left-animate { animation: slide-in-left 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards; }
+    .player-right-animate { animation: slide-in-right 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards; }
+
+    /* Faíscas de Fundo */
+    .particles-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+    .particle { position: absolute; width: 3px; height: 3px; background: var(--accent-green); border-radius: 50%; opacity: 0.4; animation: float 25s infinite linear; }
+    @keyframes float { 
+      from { transform: translateY(110vh) rotate(0deg); } 
+      to { transform: translateY(-10vh) rotate(360deg); } 
+    }
+
+    #theme-toggle { position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--card); color: var(--text-primary); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <button id="theme-toggle"></button>
+
+  <header class="py-6 text-center">
+    <img src="dmpes-logo.png" alt="Logo DMPES" class="h-24 mx-auto logo-glow">
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-center text-center p-4 overflow-hidden">
+      <div class="particles-bg">
+        <div class="particle" style="left:5%; animation-duration:22s; animation-delay:-2s;"></div>
+        <div class="particle" style="left:15%; animation-duration:18s; animation-delay:-4s;"></div>
+        <div class="particle" style="left:25%; animation-duration:25s; animation-delay:-7s;"></div>
+        <div class="particle" style="left:35%; animation-duration:16s; animation-delay:-3s;"></div>
+        <div class="particle" style="left:45%; animation-duration:28s; animation-delay:-9s;"></div>
+        <div class="particle" style="left:55%; animation-duration:19s; animation-delay:-1s;"></div>
+        <div class="particle" style="left:65%; animation-duration:24s; animation-delay:-11s;"></div>
+        <div class="particle" style="left:75%; animation-duration:17s; animation-delay:-5s;"></div>
+        <div class="particle" style="left:85%; animation-duration:29s; animation-delay:-14s;"></div>
+        <div class="particle" style="left:95%; animation-duration:21s; animation-delay:-6s;"></div>
+      </div>
+      <div class="relative z-10 animate-on-scroll">
+        <h1 class="hero-main-title text-5xl md:text-7xl lg:text-8xl">DMPES PATCH</h1>
+        <p class="font-russo mt-2 text-2xl md:text-3xl text-[var(--text-primary)] tracking-wider">A NOVA VERSÃO CHEGOU</p>
+        <p class="mt-4 text-lg md:text-xl text-[var(--text-secondary)]">A experiência definitiva para seu PES de PC.</p>
+        <a href="#versoes" class="btn-primary inline-block text-xl px-12 py-4 mt-8">COMECE A JOGAR</a>
+      </div>
+      <div class="hidden md:block absolute bottom-0 -left-10 opacity-0 player-glow player-left-animate">
+        <img src="jogador-1.png" alt="Jogador 1" class="h-[85vh]">
+      </div>
+      <div class="hidden md:block absolute bottom-0 -right-10 opacity-0 player-glow player-right-animate">
+        <img src="jogador-2.png" alt="Jogador 2" class="h-[85vh]">
+      </div>
+    </section>
+
+    <!-- O que é o DMPES -->
+    <section class="py-20 animate-on-scroll">
+      <h2 class="section-title text-4xl md:text-5xl mb-8 text-center">O QUE É O DMPES?</h2>
+      <p class="max-w-4xl mx-auto text-center text-lg text-[var(--text-secondary)] px-4">
+        O DMPES é um patch de atualização completo, criado por fãs para fãs. Nossa missão é modernizar e trazer o máximo de realismo ao seu jogo, com elencos atualizados, uniformes licenciados, gráficos melhorados e novos conteúdos. Tudo em um único pacote, fácil de instalar.
+      </p>
+    </section>
+
+    <!-- Versões (Gratuito vs VIP) -->
+    <section id="versoes" class="py-20 bg-[var(--card)] border-y border-[var(--border)] animate-on-scroll">
+      <h2 class="section-title text-4xl md:text-5xl mb-12 text-center">ESCOLHA SUA EXPERIÊNCIA</h2>
+      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 px-4 items-stretch">
+        <div class="bg-[var(--bg)] p-8 rounded-lg border border-[var(--border)] flex flex-col">
+          <h3 class="font-russo text-3xl mb-4 text-white">VERSÃO GRATUITA</h3>
+          <ul class="text-[var(--text-secondary)] mb-6 flex-grow space-y-2">
+            <li><span class="text-[var(--accent-green)]">✔</span> Brasileirão A & B atualizados</li>
+            <li><span class="text-[var(--accent-green)]">✔</span> Ligas Europeias 100% licenciadas</li>
+            <li><span class="text-[var(--accent-green)]">✔</span> Jogo Base (PES 17) já incluso</li>
+          </ul>
+          <a href="#adquirir" class="mt-4 block text-center w-full bg-[var(--border)] font-russo py-3 rounded-lg hover:bg-gray-700 transition-colors">BAIXAR NO DISCORD</a>
+        </div>
+        <div class="bg-[var(--bg)] p-8 rounded-lg border-2 border-[var(--accent-green)] flex flex-col shadow-lg shadow-[var(--accent-green)]/20">
+          <h3 class="font-russo text-3xl mb-4 text-[var(--accent-green)]">💎 DMPES VIP</h3>
+          <ul class="text-[var(--text-secondary)] mb-6 flex-grow space-y-2">
+            <li><span class="text-[var(--accent-green)]">⭐</span> Tudo da versão gratuita, E MAIS:</li>
+            <li><span class="text-[var(--accent-green)]">⚡</span> Atualizações prioritárias</li>
+            <li><span class="text-[var(--accent-green)]">😎</span> Faces, menus e placares exclusivos</li>
+            <li><span class="text-[var(--accent-green)]">🖼️</span> Gráficos e uniformes em 4K</li>
+          </ul>
+          <a href="#adquirir" class="mt-4 block text-center w-full bg-[var(--accent-green)] text-black font-russo py-3 rounded-lg hover:scale-105 transition-transform">QUERO SER VIP</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase VIP -->
+    <section id="showcase" class="py-20 animate-on-scroll">
+      <h2 class="section-title text-4xl md:text-5xl mb-4 text-center">VEJA O VIP EM AÇÃO</h2>
+      <p class="text-[var(--text-secondary)] text-center mb-12">Screenshots de algumas das melhorias exclusivas para membros VIP.</p>
+      <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
+        <div class="aspect-video rounded-lg overflow-hidden shadow-lg"><img src="previa-vip-1.jpg" alt="Novo Menu Exclusivo" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"></div>
+        <div class="aspect-video rounded-lg overflow-hidden shadow-lg"><img src="previa-vip-2.jpg" alt="Face Realista Exclusiva" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"></div>
+        <div class="aspect-video rounded-lg overflow-hidden shadow-lg"><img src="previa-vip-3.jpg" alt="Placar Exclusivo" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"></div>
+        <div class="aspect-video rounded-lg overflow-hidden shadow-lg"><img src="previa-vip-4.jpg" alt="Estádio Exclusivo" class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"></div>
+      </div>
+    </section>
+
+    <!-- Como Adquirir -->
+    <section id="adquirir" class="py-20 bg-[var(--card)] border-y border-[var(--border)] text-center animate-on-scroll">
+      <h2 class="section-title text-4xl md:text-5xl mb-4">COMO BAIXAR OU VIRAR VIP?</h2>
+      <p class="text-[var(--text-secondary)] max-w-2xl mx-auto mb-8">É simples! Entre em nosso servidor do Discord. Lá você encontra os links para a versão gratuita e pode entrar em contato com a administração para adquirir seu acesso VIP.</p>
+      <div class="flex flex-wrap justify-center items-center gap-6 px-4">
+        <a href="https://discord.com/invite/Xw6NBVVkPa" target="_blank" class="bg-[#5865F2] text-white font-russo text-lg px-8 py-4 rounded-lg flex items-center gap-3 hover:scale-105 transition-transform">
+          <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515c-.27.49-.57 1.1-.78 1.63-2.34-.35-4.68-.35-7.02 0-.21-.53-.51-1.14-.78-1.63a19.87 19.87 0 0 0-4.885 1.515C.534 9.046-.32 13.58.099 18.058a20.03 20.03 0 0 0 5.994 3.03c.46-.63.88-1.3 1.23-2-.65-.23-1.27-.52-1.85-.87.13-.1.26-.2.39-.3 3.47 2.04 7.18 2.04 10.65 0 .13.1.26.2.39.3-.58.35-1.2.64-1.85.87.35.7.77 1.37 1.23 2a20.03 20.03 0 0 0 5.994-3.03c.42-4.48-.43-9.01-3.55-13.69Z"/></svg>
+          ENTRAR NO DISCORD
+        </a>
+        <a href="https://www.instagram.com/dmpes_" target="_blank" class="bg-gradient-to-r from-purple-600 via-pink-500 to-yellow-400 text-white font-russo text-lg px-8 py-4 rounded-lg flex items-center gap-3 hover:scale-105 transition-transform">
+          <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7Zm10 2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h10ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm4.5-.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+          SEGUIR NO INSTAGRAM
+        </a>
+        <a href="https://www.youtube.com/@danielmodspes17" target="_blank" class="bg-[#FF0000] text-white font-russo text-lg px-8 py-4 rounded-lg flex items-center gap-3 hover:scale-105 transition-transform">
+          <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M21.58 6.19a2 2 0 0 0-1.77-1.77C18.27 4 12 4 12 4S5.73 4 4.19 4.42a2 2 0 0 0-1.77 1.77C2 7.73 2 12 2 12s0 4.27.42 5.81a2 2 0 0 0 1.77 1.77C5.73 20 12 20 12 20s6.27 0 7.81-.42a2 2 0 0 0 1.77-1.77C22 16.27 22 12 22 12s0-4.27-.42-5.81ZM10 15.46V8.54L16 12l-6 3.46Z"/></svg>
+          REVIEWS NO YOUTUBE
+        </a>
+      </div>
+    </section>
+
+    <!-- Teaser 5.0 -->
+    <section class="py-20 text-center animate-on-scroll">
+      <h2 class="font-russo text-4xl md:text-5xl text-[var(--text-secondary)] mb-4">O FUTURO ESTÁ SENDO CONSTRUÍDO.</h2>
+      <p class="gold-text text-5xl md:text-6xl mb-8 font-russo">DMPES 5.0</p>
+      <img src="em-breve-5.0.jpg" alt="Teaser DMPES 5.0" class="mx-auto rounded-xl shadow-2xl blur-md hover:blur-sm transition-all duration-500 w-full max-w-4xl px-4">
+    </section>
+  </main>
+
+  <footer class="text-center py-8 border-t border-[var(--border)]">
+    <p class="text-sm text-[var(--text-secondary)] font-russo">SIGA NOSSAS REDES SOCIAIS</p>
+    <div class="flex justify-center gap-6 mt-4 text-[var(--text-secondary)]">
+        <a href="https://www.instagram.com/dmpes_" target="_blank" class="hover:text-[var(--accent-green)] transition-colors">INSTAGRAM: @DMPES_</a>
+        <a href="https://www.youtube.com/@danielmodspes17" target="_blank" class="hover:text-[var(--accent-green)] transition-colors">YOUTUBE: @DANIELMODSPES17</a>
+    </div>
+    <p class="text-xs text-gray-600 mt-6">&copy; <span id="current-year"></span> DMPES. TODOS OS DIREITOS RESERVADOS.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+
+        const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
+        const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+        
+        const applyTheme = (theme) => {
+            document.documentElement.classList.toggle('light', theme === 'light');
+            document.documentElement.classList.toggle('dark', theme !== 'light');
+            if (themeToggle) themeToggle.innerHTML = theme === 'light' ? moonIcon : sunIcon;
+        };
+
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(currentTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                let newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                applyTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        }
+    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>```
